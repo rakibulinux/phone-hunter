@@ -47,7 +47,7 @@ const displayPhones = (phones, dataLimit) => {
         <div class="card-body">
           <h5 class="card-title">${phone_name}</h5>
           <p class="card-text">Brand Name: ${brand}</p>
-          <button class="btn btn-primary"><a class="text-light text-decoration-none" href="/${slug}">Buy Now</a></button>
+          <button onclick="loadPhoneDetails('${slug}')" class="btn btn-primary"  data-bs-toggle="modal" data-bs-target="#phoneDetailsModal">Buy Now</button>
         </div>
       </div>        
         `
@@ -65,6 +65,40 @@ document.getElementById('btn-show-more').addEventListener('click', function(){
     showMorePhones()
 
 })
+
+const loadPhoneDetails = async id => {
+    const url = `https://openapi.programming-hero.com/api/phone/${id}`
+    const res = await fetch(url)
+    const data = await res.json();
+    displayPhoneDetails(data.data)
+}
+
+const displayPhoneDetails = phone => {
+    console.log(phone)
+    
+    // const getSensors = phone.mainFeatures.sensors;
+    // console.log(getSensors)
+    // for(const getSensor of getSensors){
+    //     const newSensor = getSensor.charAt(0).toUpperCase() + getSensor.slice(1);
+    //     console.log(newSensor);
+    //     // return newSensor;
+    // }
+    const phoneDetailsModalLabel = document.getElementById('phoneDetailsModalLabel');
+    phoneDetailsModalLabel.innerText = phone.name;
+    const phoneDetails = document.getElementById('phone-details');
+    phoneDetails.innerHTML = `
+    <img src="${phone.image}" class="card-img-top" alt="...">
+    <div class="card-body">
+      <h5 class="card-title">${phone.releaseDate}</h5>
+      <p class="card-text">Brand Name: ${phone.brand}</p>
+      <p class="card-text">ChipSet: ${phone.mainFeatures.chipSet}</p>
+      <p class="card-text">Display: ${phone.mainFeatures.displaySize}</p>
+      <p class="card-text">Memory: ${phone.mainFeatures.memory}</p>
+      <p class="card-text">Storage: ${phone.mainFeatures.storage ? phone.mainFeatures.storage : 'No stotage found'}</p>
+      <p id="text-text" class="card-text">Sensors: ${phone.mainFeatures.sensors.join(', ')}</p>
+      </div>
+    `;
+}
 
 const toggleSpinner = isLodding => {
     const loddingSpinner = document.getElementById('spinner');
