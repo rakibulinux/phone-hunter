@@ -1,12 +1,41 @@
-const loadPhones = async () => {
-    const url = `https://openapi.programming-hero.com/api/phones?search=iphone`
+const loadPhones = async (searchText, dataLimit) => {
+    const url = `https://openapi.programming-hero.com/api/phones?search=${searchText}`
     const res = await fetch(url)
     const data = await res.json()
-    displayPhones(data.data)
+    displayPhones(data.data, dataLimit)
 }
 
-const displayPhones = phones => {
+const showMorePhones = (dataLimit) => {
+    toggleSpinner(true)
+    const searchField = document.getElementById('search-field');
+    const searchText = searchField.value;
+    loadPhones(searchText, dataLimit)
+}
+
+const displayPhones = (phones, dataLimit) => {
     const phonesContainer = document.getElementById('phones-container')
+    phonesContainer.innerHTML = ``
+
+    //Show more
+    const showMore = document.getElementById('show-more');
+    if(dataLimit && phones.length > 10){
+        phones = phones.slice(0,10)
+        showMore.classList.remove('d-none')
+    }
+    else{
+        showMore.classList.add('d-none')
+
+    }
+    //Display 20 result
+
+    //Display no phone message
+    const noPhone = document.getElementById('no-found-message')
+    if(phones.length === 0){
+        noPhone.classList.remove('d-none')
+    }
+    else{
+        noPhone.classList.add('d-none')
+    }
     console.log(phones)
     phones.forEach(phone => {
         const {brand, image, phone_name, slug} = phone
@@ -24,6 +53,26 @@ const displayPhones = phones => {
         `
         phonesContainer.appendChild(phoneDiv)
     });
+    toggleSpinner(false)
+
 }
 
-loadPhones()
+document.getElementById('btn-search').addEventListener('click', function(){
+    showMorePhones(10)
+
+})
+document.getElementById('btn-show-more').addEventListener('click', function(){
+    showMorePhones()
+
+})
+
+const toggleSpinner = isLodding => {
+    const loddingSpinner = document.getElementById('spinner');
+    if(isLodding){
+        loddingSpinner.classList.remove('d-none')
+    }else{
+        loddingSpinner.classList.add('d-none')
+    }
+}
+
+loadPhones('a')
