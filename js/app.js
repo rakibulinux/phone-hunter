@@ -26,7 +26,7 @@ const displayPhones = (phones, dataLimit) => {
         showMore.classList.add('d-none')
 
     }
-    //Display 20 result
+    //Display 10 result
 
     //Display no phone message
     const noPhone = document.getElementById('no-found-message')
@@ -74,15 +74,13 @@ const loadPhoneDetails = async id => {
 }
 
 const displayPhoneDetails = phone => {
-    console.log(phone)
-    
-    // const getSensors = phone.mainFeatures.sensors;
-    // console.log(getSensors)
-    // for(const getSensor of getSensors){
-    //     const newSensor = getSensor.charAt(0).toUpperCase() + getSensor.slice(1);
-    //     console.log(newSensor);
-    //     // return newSensor;
-    // }
+    const getSensors = phone.mainFeatures.sensors;
+    console.log(getSensors)
+    let newAry= []
+    for(const getSensor of getSensors){
+        const newSensor = getSensor.charAt(0).toUpperCase() + getSensor.slice(1);
+        newAry.push(newSensor);
+    }
     const phoneDetailsModalLabel = document.getElementById('phoneDetailsModalLabel');
     phoneDetailsModalLabel.innerText = phone.name;
     const phoneDetails = document.getElementById('phone-details');
@@ -95,7 +93,7 @@ const displayPhoneDetails = phone => {
       <p class="card-text">Display: ${phone.mainFeatures.displaySize}</p>
       <p class="card-text">Memory: ${phone.mainFeatures.memory}</p>
       <p class="card-text">Storage: ${phone.mainFeatures.storage ? phone.mainFeatures.storage : 'No stotage found'}</p>
-      <p id="text-text" class="card-text">Sensors: ${phone.mainFeatures.sensors.join(', ')}</p>
+      <p id="text-text" class="card-text">Sensors: ${newAry.join(', ')}</p>
       </div>
     `;
 }
