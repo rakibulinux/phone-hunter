@@ -36,7 +36,6 @@ const displayPhones = (phones, dataLimit) => {
     else{
         noPhone.classList.add('d-none')
     }
-    console.log(phones)
     phones.forEach(phone => {
         const {brand, image, phone_name, slug} = phone
         const phoneDiv = document.createElement('div');
@@ -75,7 +74,6 @@ const loadPhoneDetails = async id => {
 
 const displayPhoneDetails = phone => {
     const getSensors = phone.mainFeatures.sensors;
-    console.log(getSensors)
     let newAry= []
     for(const getSensor of getSensors){
         const newSensor = getSensor.charAt(0).toUpperCase() + getSensor.slice(1);
